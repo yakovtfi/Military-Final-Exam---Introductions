@@ -147,3 +147,4 @@ class DatabaseManager:
         cursor.execute('DELETE FROM rooms')
         cursor.execute('DELETE FROM dorms')
         self.connection.commit()
+# בסופו של דבר זה יתן לנו שלמור את הכל בדאטה ככה שלא ימחק גם אם נסגור את התוכנית או המחשב
