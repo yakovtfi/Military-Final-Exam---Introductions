@@ -1,7 +1,7 @@
 import sqlite3
 from models.Soldier import Soldier, Gender
 
-
+#פה יצרתי את מנהל הדאטה שבא נעשה את כל החיבורים ניצור רת כל הטבלאות של מעונות חיילים וכו וגם נכניס לתוכן (לכל טבלה) את הדברים שאם קשורים אליהם
 class DatabaseManager:
     def __init__(self, db_path='base.db'):
         self.db_path = db_path

@@ -17,9 +17,10 @@ class CSVParser:
     @staticmethod
     def validate_gender(gender):
         gender_lower = gender.lower()
-        if gender_lower in ['male']:
+        #תומך גם עברית ואנגלית באותיות קטנות
+        if gender_lower in ['male', 'זכר', 'm']:
             return Gender.MALE
-        elif gender_lower in ['female']:
+        elif gender_lower in ['female', 'נקבה', 'f']:
             return Gender.FEMALE
         return None
 
@@ -40,12 +41,13 @@ class CSVParser:
 
         for row_num, row in enumerate(csv_reader, start=2):
             try:
-                personal_id = row.get('personal_id', '').strip()
-                first_name = row.get('first_name', '').strip()
-                last_name = row.get('last_name', '').strip()
-                gender_str = row.get('gender', '').strip()
-                city = row.get('city', '').strip()
-                distance_str = row.get('distance_from_base', '').strip()
+                #פה בניתי אופציה שזה יתמוך בנתונים שאם בעברית וגם באנגלית
+                personal_id = (row.get('personal_id') or row.get('מספר אישי', '')).strip()
+                first_name = (row.get('first_name') or row.get('שם פרטי', '')).strip()
+                last_name = (row.get('last_name') or row.get('שם משפחה', '')).strip()
+                gender_str = (row.get('gender') or row.get('מין', '')).strip()
+                city = (row.get('city') or row.get('עיר מגורים', '')).strip()
+                distance_str = (row.get('distance_from_base') or row.get('מרחק מהבסיס', '')).strip()
 
                 if not CSVParser.validate_personal_id(personal_id):
                     errors.append(f"Row {row_num}: Invalid personal_id '{personal_id}'")
