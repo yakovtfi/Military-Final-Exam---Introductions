@@ -1,7 +1,7 @@
 from  models.Soldier import AssignmentStatus
 from Assignment.assignment import DistanceBased
 
-
+#פה נבנה את הניהול של הבאס הוספת חדר לקבל חדר על ידי שם שיוך חיילים לחדרים וכו 
 class BaseManager:
     def __init__(self, assignment=None, db_manager=None):
         self._dorms = []
