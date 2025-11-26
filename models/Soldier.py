@@ -50,6 +50,18 @@ class Soldier:
     def distance_from_base(self):
         return self._distance_from_base
 
+    @property
+    def status(self):
+        return self._status
+    
+    @property
+    def dorm_name(self):
+        return self._dorm_name
+    
+    @property
+    def room_number(self):
+        return self._room_number
+
     def assign_to_room(self, dorm_name, room_number):
         self._status = AssignmentStatus.ASSIGNED
         self._dorm_name = dorm_name
