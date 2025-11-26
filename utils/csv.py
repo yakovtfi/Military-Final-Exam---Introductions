@@ -13,7 +13,7 @@ class CSVParser:
         if not personal_id.isdigit():
             return False
         return True
-
+#
     @staticmethod
     def validate_gender(gender):
         gender_lower = gender.lower()
