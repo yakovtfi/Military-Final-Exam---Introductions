@@ -27,8 +27,8 @@ def initialize_scheme():
         return jsonify({"error": str(e)}), 500
 
 #פה נבדוק אם הקבצים שלנו קימים אם לא נחזיר שגיאה בהתאם ואם כן נחזיר בסדר
-@app.route('/assignCsv', methods=['POST'])
-def assign_csv():
+@app.route('/assignWithCsv', methods=['POST'])
+def assign_with_csv():
     if 'file' not in request.files:
         return jsonify({"error": "No file provided"}), 400
 
@@ -86,6 +86,39 @@ def search_soldier():
         result["status"] = "waiting"
 
     return jsonify(result), 200
+
+#פה נקבת את הדוח של תפוסת חדרים האם אם מלאים ריקים וכו
+@app.route('/space', methods=['GET'])
+def space_report():
+    try:
+        report = base_manager.get_space_report()
+        return jsonify({"dorms": report}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+#פה נקבל את דוח רשימת המתנה טנבדוק אלו חילים שובצו ואלו לא
+@app.route('/waitingList', methods=['GET'])
+def waiting_list():
+    try:
+        waiting_soldiers = base_manager.get_waiting_soldiers()
+        
+        soldiers_list = []
+        for soldier in waiting_soldiers:
+            soldiers_list.append({
+                "personal_id": soldier.personal_id,
+                "first_name": soldier.first_name,
+                "last_name": soldier.last_name,
+                "gender": soldier.gender.value,
+                "city": soldier.city,
+                "distance_from_base": soldier.distance_from_base
+            })
+        
+        return jsonify({
+            "count": len(soldiers_list),
+            "soldiers": soldiers_list
+        }), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 if __name__ == '__main__':
