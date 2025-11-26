@@ -1,9 +1,8 @@
-from flask import Flask,request,jsonify
+from flask import Flask, request, jsonify
 from models.dorm import Dorm
 from utils.csv import CSVParser
 from base_manager.base_manager import BaseManager
 from database.db import DatabaseManager
-
 
 app = Flask(__name__)
 
@@ -12,7 +11,7 @@ db_manager.connect()
 base_manager = BaseManager(db_manager=db_manager)
 
 
-#ניתוח טבלאות ונבדוק את התקינות שלהם
+# ניתוח טבלאות ונבדוק את התקינות שלהם
 @app.route('/initializeScheme', methods=['POST'])
 def initialize_scheme():
     try:
@@ -26,7 +25,8 @@ def initialize_scheme():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-#פה נבדוק אם הקבצים שלנו קימים אם לא נחזיר שגיאה בהתאם ואם כן נחזיר בסדר
+
+# פה נבדוק אם הקבצים שלנו קימים אם לא נחזיר שגיאה בהתאם ואם כן נחזיר בסדר
 @app.route('/assignWithCsv', methods=['POST'])
 def assign_with_csv():
     if 'file' not in request.files:
@@ -59,7 +59,8 @@ def assign_with_csv():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-#פה נחפש את החייל אם הוא קיים בקובץ לפי מספר אישי וכו
+
+# פה נחפש את החייל אם הוא קיים בקובץ לפי מספר אישי וכו
 @app.route('/search', methods=['GET'])
 def search_soldier():
     personal_id = request.args.get('personal_id')
@@ -87,7 +88,8 @@ def search_soldier():
 
     return jsonify(result), 200
 
-#פה נקבת את הדוח של תפוסת חדרים האם אם מלאים ריקים וכו
+
+# פה נקבת את הדוח של תפוסת חדרים האם אם מלאים ריקים וכו
 @app.route('/space', methods=['GET'])
 def space_report():
     try:
@@ -96,12 +98,13 @@ def space_report():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-#פה נקבל את דוח רשימת המתנה טנבדוק אלו חילים שובצו ואלו לא
+
+# פה נקבל את דוח רשימת המתנה טנבדוק אלו חילים שובצו ואלו לא
 @app.route('/waitingList', methods=['GET'])
 def waiting_list():
     try:
         waiting_soldiers = base_manager.get_waiting_soldiers()
-        
+
         soldiers_list = []
         for soldier in waiting_soldiers:
             soldiers_list.append({
@@ -112,7 +115,7 @@ def waiting_list():
                 "city": soldier.city,
                 "distance_from_base": soldier.distance_from_base
             })
-        
+
         return jsonify({
             "count": len(soldiers_list),
             "soldiers": soldiers_list
@@ -134,3 +137,9 @@ if __name__ == '__main__':
         app.run(debug=True, port=5000)
     finally:
         db_manager.close()
+
+#לסיכום בניתי פה שרת שנותן ניתוח טבלאות אתחול טבלאות ובודקים את הקבצים אם הם csv אם הם קימים אם יש להם שם
+# בניתי שרת שבודק את הדוח של החדרים מלאים או לא
+#עוד אחד שבניתי בודק איזה חילים ממתנים ואלו לא
+#וגם בנינו שרת שאפשר לחפש את החייל לפי המספר האישי שלו
+#מקווה שהכל מובן
